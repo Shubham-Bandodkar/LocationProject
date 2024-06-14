@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Share Your Location</title>
+  </head>
+  <body>
+    <h1>Share Your GPS Location</h1>
+    <p id="status">Fetching location...</p>
+
+    <script>
+      function sendLocation(latitude, longitude) {
+        // Create a URL to send the location data
+        const redirectUrl = `https://your-server.com/receive-location?lat=${latitude}&lng=${longitude}`;
+        window.location.href = redirectUrl;
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const latitude = position.coords.latitude;
+              const longitude = position.coords.longitude;
+              document.getElementById(
+                "status"
+              ).innerText = `Latitude: ${latitude}, Longitude: ${longitude}`;
+              sendLocation(latitude, longitude);
+            },
+            (error) => {
+              document.getElementById(
+                "status"
+              ).innerText = `Error: ${error.message}`;
+            }
+          );
+        } else {
+          document.getElementById("status").innerText =
+            "Geolocation is not supported by this browser.";
+        }
+      }
+
+      window.onload = getLocation;
+    </script>
+  </body>
+</html>
